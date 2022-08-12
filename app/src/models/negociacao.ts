@@ -1,10 +1,28 @@
-export class Negociacao {
+import { Imprimivel } from "../utils/imprimivel.js";
+
+export class Negociacao implements Imprimivel{
 
   constructor(
     private _data: Date, 
     public readonly quantidade: number, 
     public readonly valor: number
-    ) {}
+  ) {}
+
+  public static criaDe(dataString: string, quantidadeString: string, valorString: string): Negociacao {
+    const exp = /-/g;
+    const date = new Date(dataString.replace(exp, ','))
+  
+    const quantidade = parseInt(quantidadeString)
+  
+    const valor = parseFloat(valorString)
+  
+    const negociacao = new Negociacao(
+      date,
+      quantidade,
+      valor
+    );
+    return negociacao
+  }
 
   get volume(): number {
     return this.quantidade * this.valor;
@@ -15,20 +33,12 @@ export class Negociacao {
     return data
   }
 
-  public static criaDe(dataString: string, quantidadeString: string, valorString: string): Negociacao {
-    const exp = /-/g;
-    const date = new Date(dataString.replace(exp, ','))
-
-    const quantidade = parseInt(quantidadeString)
-
-    const valor = parseFloat(valorString)
-
-    const negociacao = new Negociacao(
-      date,
-      quantidade,
-      valor
-    );
-
-    return negociacao
+  public paraTexto(): string {
+    return`
+      Data: ${this.data},
+      Quantidade: ${this.quantidade},
+      Valor: ${this.valor},
+    `
   }
+
 }
